@@ -94,7 +94,9 @@ module.exports = app => {
           }
         },
         { new: true }
-      );
+      ).then(dbArticle => {
+        res.json(dbArticle);
+      });
     });
   });
 };
