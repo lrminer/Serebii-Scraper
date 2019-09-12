@@ -90,7 +90,12 @@ module.exports = app => {
         req.params.id,
         {
           $push: {
-            comments: dbComment._id
+            comments: {
+              author: dbComment.author,
+              subject: dbComment.subject,
+              message: dbComment.message,
+              date: dbComment.date
+            }
           }
         },
         { new: true }

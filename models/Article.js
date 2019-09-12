@@ -24,8 +24,19 @@ const ArticleSchema = new Schema({
         // required: true
     },
     comments: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Comment'
+        id : {
+            ref: 'Comment',
+            type: Schema.Types.ObjectId,
+        },
+        author: {
+            type: String
+        },
+        subject: {
+            type: String
+        },
+        message: {
+            type: String
+        }
     }]
 });
 

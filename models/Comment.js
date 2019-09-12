@@ -11,7 +11,7 @@ const CommentSchema = new Schema({
         type: String,
         required: true
     },
-    content: {
+    message: {
         type: String,
         required: true
     },

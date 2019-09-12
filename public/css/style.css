@@ -1,0 +1,11 @@
+#comment-form {
+    display: flex;
+    flex-direction: column;
+    background: green;
+}
+
+.comment-div {
+    background: lightblue;
+    margin: 20px;
+    /* text-align: center; */
+}
