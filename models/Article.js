@@ -1,27 +1,29 @@
 const mongoose = require('mongoose');
+const uniqueValidator = require('mongoose-unique-validator');
 
 const Schema = mongoose.Schema;
 
 const ArticleSchema = new Schema({
     heading: {
         type: String,
-        // required: true
+        required: true,
+        unique: true
     },
     link: {
         type: String,
-        // required: true
+        required: true
     },
     date: {
         type: String,
-        // required: true
+        required: true
     },
     image: {
         type: String,
-        // required: true
+        required: true
     },
     description: {
         type: String,
-        // required: true
+        required: true
     },
     comments: [{
         id : {
@@ -39,6 +41,8 @@ const ArticleSchema = new Schema({
         }
     }]
 });
+
+ArticleSchema.plugin(uniqueValidator);
 
 const Article = mongoose.model('Article', ArticleSchema);
 
