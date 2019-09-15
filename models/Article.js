@@ -21,6 +21,10 @@ const ArticleSchema = new Schema({
         type: String,
         required: true
     },
+    subcatTitle: {
+        type: String,
+        // required: true
+    },
     description: {
         type: String,
         required: true

@@ -1,100 +1,119 @@
-$.get('/scrape', function() {
+$.get("/scrape", function() {}).then(loadPage);
 
-}).then(loadPage)
-
-function loadPage() {
-  $.get("/api/articles", data => {
-    console.log(data);
-    data.forEach(item => {
-      console.log(item._id);
-      const article = $("<article>")
-        .addClass("")
-        .data("id", item._id);
-      const heading = $("<h2>")
-        .addClass("article-heading")
-        .append(
-          $("<a>")
-            .addClass("article-link")
-            .attr("href", "https://www.serebii.net" + item.link)
-            .text(item.heading)
-        );
-  
-      const date = $("<h3>")
-        .addClass("article-date")
-        .text(item.date);
-  
-      const image = $("<img>")
-        .addClass("article-image")
-        .attr("src", "https://www.serebii.net" + item.image);
-  
-      const description = $("<p>")
-        .addClass("article-description")
-        .text(item.description);
-  
-      article.append(heading, date, image, description);
-  
-      // might need to check if item.comments > 0; hint: empty arrays are truthy
-      const articleComments = $("<div>").addClass("article-comments");
-      item.comments.forEach(comment => {
-        const commentDiv = $("<div>")
-          .addClass("comment-div shadow-drop-center")
+function loadPage(id) {
+  $.get("/api/articles")
+    .then(data => {
+      console.log(data);
+      data.forEach(item => {
+        console.log(item._id);
+        const article = $("<article>")
+          .attr("id", item._id)
+          .addClass("")
+          .data("id", item._id);
+        const heading = $("<h2>")
+          .addClass("article-heading")
           .append(
-            $("<h4>").text("Author: " + comment.author),
-            $("<h4>").text("Subject: " + comment.subject),
-            $("<h4>").text("Message: " + comment.message)
+            $("<a>")
+              .addClass("article-link")
+              .attr("href", "https://www.serebii.net" + item.link)
+              .text(item.heading)
           );
-  
-        articleComments.append(commentDiv);
+
+        const date = $("<h3>")
+          .addClass("article-date")
+          .text(item.date);
+
+        const image = $("<img>")
+          .addClass("article-image")
+          .attr("src", "https://www.serebii.net" + item.image);
+
+        const description = $("<p>")
+          .addClass("article-description")
+          .text(item.description);
+
+        article.append(heading, date, image, description);
+
+        // might need to check if item.comments > 0; hint: empty arrays are truthy
+        const articleComments = $("<div>").addClass("article-comments");
+        item.comments.forEach(comment => {
+          const commentDiv = $("<div>")
+            .addClass("comment-div")
+            .append(
+              $("<h4>").text("Author: " + comment.author),
+              $("<h4>").text("Subject: " + comment.subject),
+              $("<h4>").text("Message: " + comment.message)
+            );
+
+          articleComments.append(commentDiv);
+        });
+        const button = $("<button>")
+          .addClass("btn btn-success btn-link")
+          .append(
+            $("<a>")
+              .addClass("link-comment-form")
+              .text("Post a comment")
+              .attr("href", "#form-div")
+          );
+        articleComments.append(button);
+        article.append(articleComments);
+
+        $("#display").append(article);
       });
-      const button = $("<button>")
-      .addClass("btn btn-success btn-link")
-      .append(
-        $("<a>")
-          .addClass("link-comment-form")
-          .text("Post a comment")
-          .attr("href", "#form-div")
-      );
-      articleComments.append(button);
-      article.append(articleComments);
-  
-      $("#display").append(article);
+    })
+    .then(() => {
+      
+      console.log(window.location.href.slice(-25));
+      const goToThisId = window.location.href.slice(-25);
+
+
     });
-  });
 }
 
 $(document).on("click", "article", function() {
   const form = $("#comment-form");
   form.empty();
   // console.log($(this).data('id'))
+  console.log($(this).attr("id"));
+  const articleId = $(this).attr("id");
 
-  const heading = $("<h2>").text(
-    $(this)
-      .children("h2")
-      .text()
-  );
+  const heading = $("<h2>")
+    .addClass("comment")
+    .text(
+      $(this)
+        .children("h2")
+        .text()
+    );
   // console.log(heading);
 
   const id = $(this).data("id");
   console.log(id);
 
-  const label1 = $("<h3>").text("Author: ");
+  const label1 = $("<h3>")
+    .text("Author: ")
+    .addClass("comment");
   const author = $("<input>")
     .attr("type", "text")
-    .addClass("comment-author");
+    .addClass("comment comment-author");
 
-  const label2 = $("<h3>").text("Subject: ");
+  const label2 = $("<h3>")
+    .text("Subject: ")
+    .addClass("comment");
   const subject = $("<input>")
     .attr("type", "text")
-    .addClass("comment-subject");
+    .addClass("comment comment-subject");
 
-  const label3 = $("<h3>").text("Message: ");
-  const message = $("<input>")
+  const label3 = $("<h3>")
+    .text("Message: ")
+    .addClass("comment");
+  const message = $("<textarea>")
+    .attr("rows", "4")
+    .attr("cols", "50")
     .attr("type", "text")
-    .addClass("comment-message");
+    .addClass("comment comment-message");
 
   const button = $("<input>")
     .attr("type", "button")
-    .addClass("comment-button")
+    .addClass("comment comment-button")
     .val("Submit");
   //click event for button... cb will actually be a post request to /api/articles/:id
   button.on("click", function() {
@@ -113,7 +132,13 @@ $(document).on("click", "article", function() {
     console.log(dataToSend);
     $.post("/api/articles/" + id, dataToSend, function(response) {
       console.log(response);
-    });
+    })
+      .then(function() {
+        window.location.href = "/#" + articleId;
+      })
+      .then(function() {
+        document.location.reload();
+      });
   });
 
   form.append(

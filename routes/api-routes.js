@@ -44,9 +44,18 @@ module.exports = app => {
 
         article.description = $(element)
           .children("div.subcat")
-          .children("p")
+          .children("p.title:first-of-type")
+          .next()
           .text()
           .replace(/�/g, "é");
+
+        article.subcatTitle = $(element)
+          .children("div.subcat:first-of-type")
+          .children("p.title")
+          .text()
+          .replace(/�/g, "é");
+
+
         // .replace(/Pok�mon/g, 'Pokémon')
         // .replace(/Pok�/g, 'Poké')
         // .replace(/Pokk�/g, 'Pokké')
