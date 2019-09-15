@@ -61,10 +61,12 @@ function loadPage(id) {
       });
     })
     .then(() => {
-      
-      console.log(window.location.href.slice(-25));
-      const goToThisId = window.location.href.slice(-25);
+      // bring the viewer to the article they just made a post for once the page has been reloaded
+      // console.log(window.location.href.slice(-25));
+      const goToThisId = window.location.href.slice(-24);
 
+      var elmnt = document.getElementById(goToThisId);
+      elmnt.scrollIntoView();
 
     });
 }
