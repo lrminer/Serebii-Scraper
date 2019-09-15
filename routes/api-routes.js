@@ -3,8 +3,9 @@ const cheerio = require("cheerio");
 const mongoose = require("mongoose");
 
 const db = require("../models");
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/donaldscraper";
 
-mongoose.connect("mongodb://localhost/donaldscraper", {
+mongoose.connect(MONGODB_URI, {
   useNewUrlParser: true
 });
 
