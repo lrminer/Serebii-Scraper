@@ -46,14 +46,10 @@ function loadPage(id) {
 
           articleComments.append(commentDiv);
         });
-        const button = $("<button>")
-          .addClass("btn btn-success comment-button btn-block")
-          .append(
-            $("<a>")
-              .addClass("link-comment-form")
-              .text("Post a comment")
-              .attr("href", "#form-div")
-          );
+        const button = $("<a>")
+          .addClass("btn btn-success comment-button btn-block link-comment-form")
+          .attr("href", "#form-div")
+          .text("Post a comment");
         articleComments.append(button);
         article.append(articleComments);
 
@@ -67,7 +63,6 @@ function loadPage(id) {
 
       var elmnt = document.getElementById(goToThisId);
       elmnt.scrollIntoView();
-
     });
 }
 
