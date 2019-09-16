@@ -47,7 +47,7 @@ function loadPage(id) {
           articleComments.append(commentDiv);
         });
         const button = $("<button>")
-          .addClass("btn btn-success btn-link")
+          .addClass("btn btn-success comment-button btn-block")
           .append(
             $("<a>")
               .addClass("link-comment-form")
